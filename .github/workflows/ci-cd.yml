@@ -1,0 +1,51 @@
+name: CI/CD
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Determine version change type
+      run: |
+        # Extract the first line of the pull request description
+        FIRST_LINE=$(echo "${{ github.event.pull_request.body }}" | head -n 1)
+    
+        # Extract the version change from the first line
+        CHANGE_TYPE=$(echo "$FIRST_LINE" | grep -oE "Change Type: (major|minor|patch|non-functional)" | sed -E "s/Change Type: //")
+    
+        if [ -z "$CHANGE_TYPE" ]; then
+          echo "Invalid or missing version change type in the first line of the pull request description."
+          exit 1
+        fi
+    
+        # If it's a non-functional change, exit without modifying the version or publishing to crates.io
+        if [ "$CHANGE_TYPE" == "non-functional" ]; then
+          echo "Non-functional change. No version increment or publication to crates.io needed."
+          exit 0
+        fi
+    
+        # Bump version accordingly
+        if [ "$CHANGE_TYPE" == "major" ]; then
+          cargo release --ver major
+        elif [ "$CHANGE_TYPE" == "minor" ]; then
+          cargo release --ver minor
+        elif [ "$CHANGE_TYPE" == "patch" ]; then
+          cargo release --ver patch
+        fi
+    
+        # Publish to crates.io
+        cargo publish --token ${{ secrets.CRATES_IO_TOKEN }}
+    
+      env:
+        CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+        RUSTFLAGS: "-C link-arg=-s"
+    
