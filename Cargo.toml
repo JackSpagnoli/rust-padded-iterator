@@ -1,0 +1,16 @@
+[package]
+name = "padded-iterator"
+version = "0.1.0"
+description = "An iterator that can be padded to a specified length"
+homepage ="https://github.com/JackSpagnoli/rust-padded-iterator"
+documentation = "https://docs.rs/padded-iterator"
+repository = "https://github.com/JackSpagnoli/rust-padded-iterator"
+keywords = ["iterator", "padding", "padded", "length"]
+categories = ["rust-patterns"]
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
