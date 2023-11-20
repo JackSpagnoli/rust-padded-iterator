@@ -1,6 +1,7 @@
 [package]
 name = "padded-iterator"
 version = "0.1.0"
+authors = ["Jack Spagnoli"]
 description = "An iterator that can be padded to a specified length"
 homepage ="https://github.com/JackSpagnoli/rust-padded-iterator"
 documentation = "https://docs.rs/padded-iterator"
