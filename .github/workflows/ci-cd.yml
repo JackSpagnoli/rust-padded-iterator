@@ -3,38 +3,16 @@ name: CI/CD
 on:
   pull_request:
     types:
-      - opened
-      - synchronize
       - closed
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Rust
-      uses: actions/setup-rust@v1
-
-    - name: Build Crate
-      run: cargo build --verbose
-
-    - name: Test Crate
-      run: cargo test --verbose
-
   release:
     runs-on: ubuntu-latest
-    needs: build
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Rust
-      uses: actions/setup-rust@v1
+      uses: actions/checkout@v3
 
     - name: Determine version change type
       run: |
