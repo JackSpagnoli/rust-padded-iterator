@@ -15,3 +15,7 @@ This project is licensed under either of
 - [MIT License](https://opensource.org/licenses/MIT)
 
 at your option.
+
+## Feedback
+
+Feel free to [raise an issue](https://github.com/JackSpagnoli/rust-padded-iterator/issues) with questions/suggestions/bugs/etc.
